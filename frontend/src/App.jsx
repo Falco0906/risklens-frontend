@@ -5,7 +5,7 @@ import ExecutiveSummary from './components/ExecutiveSummary'
 import StatsGrid from './components/StatsGrid'
 import RiskTrendCard from './components/RiskTrendCard'
 import EventTimeline from './components/EventTimeline'
-import EventInjection from './components/EventInjection'
+import InfoBanner from './components/InfoBanner'
 
 // API base URL
 const API_BASE_URL = 'https://risklens-backend-fvk6.onrender.com'
@@ -77,12 +77,11 @@ function App() {
     }
   }
   
-// Auto-refresh DISABLED to save AI quota
-// const interval = setInterval(fetchData, 30000)
-
+  // Auto-refresh every 45 seconds
   useEffect(() => {
     fetchData()
-    return () => {}
+    const interval = setInterval(fetchData, 45000)
+    return () => clearInterval(interval)
   }, [])
   
 
@@ -107,12 +106,12 @@ function App() {
           lastUpdated={lastUpdated}
         />
         <div className="dashboard">
+          <InfoBanner />
           <ExecutiveSummary
             summary={summary}
             loading={loading}
             error={error}
           />
-          <EventInjection onEventCreated={fetchData} />
           <StatsGrid stats={stats} />
           <RiskTrendCard events={events} />
           <EventTimeline

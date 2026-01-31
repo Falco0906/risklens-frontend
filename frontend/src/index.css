@@ -584,6 +584,38 @@ body {
   animation: spin 1s linear infinite;
 }
 
+/* Info Banner */
+.info-banner {
+  background: linear-gradient(135deg, rgba(74, 158, 255, 0.08) 0%, rgba(157, 122, 255, 0.04) 100%);
+  border: 1px solid rgba(74, 158, 255, 0.2);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.info-banner-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.info-banner-icon {
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.info-banner-text {
+  flex: 1;
+}
+
+.info-banner-description {
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 0;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .sidebar {
