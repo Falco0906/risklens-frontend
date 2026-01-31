@@ -1,79 +1,45 @@
-import { Brain, Sparkles } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 
-function ExecutiveSummary({ summary, loading }) {
+function ExecutiveSummary({ summary, loading, error }) {
   const formatSummaryContent = (text) => {
     if (!text) return null
     
     return text.split('\n').map((line, index) => {
       const trimmedLine = line.trim()
-      
       if (!trimmedLine) {
-        return <div key={index} style={{ height: '8px' }} />
+        return <br key={index} />
       }
-      
-      // Critical/Warning lines
-      const criticalWords = ['CRITICAL', 'HIGH RISK', 'IMMEDIATE', 'URGENT', '⚠️', 'WARNING']
-      for (const word of criticalWords) {
-        if (trimmedLine.includes(word)) {
-          return (
-            <p key={index} className="critical-line">
-              {trimmedLine}
-            </p>
-          )
-        }
-      }
-      
-      // Action/Recommendation lines
-      const actionWords = ['RECOMMENDED', 'ACTION', 'NEXT STEPS']
-      for (const word of actionWords) {
-        if (trimmedLine.includes(word)) {
-          return (
-            <p key={index} className="action-line">
-              {trimmedLine}
-            </p>
-          )
-        }
-      }
-      
-      // Bullet points
-      if (trimmedLine.startsWith('•') || trimmedLine.startsWith('-') || /^\d+\./.test(trimmedLine)) {
-        return (
-          <p key={index} className="bullet-line">
-            {trimmedLine}
-          </p>
-        )
-      }
-      
       return <p key={index}>{trimmedLine}</p>
     })
   }
-
+  
   return (
     <section className="executive-summary">
       <div className="summary-header">
-        <div className="summary-icon">
-          <Brain size={22} />
-        </div>
-        <div className="summary-title">
-          <h3>Risk Assessment</h3>
-          <span>AI-powered operational analysis</span>
-        </div>
-        <span className="summary-badge">
-          <Sparkles size={12} />
-          AI Generated
-        </span>
+        <h3>Executive Risk Brief</h3>
+        <span className="summary-subtitle">Cross-functional operational risk</span>
       </div>
+      
+      {error && (
+        <div className="error-banner">
+          <AlertCircle size={14} />
+          <span>{error}</span>
+        </div>
+      )}
       
       {loading ? (
         <div className="summary-loading">
-          <div className="loading-spinner"></div>
-          <span>Analyzing internal signals and generating risk assessment...</span>
+          <span>Loading...</span>
         </div>
-      ) : (
+      ) : summary ? (
         <div className="summary-content">
           {formatSummaryContent(summary)}
         </div>
-      )}
+      ) : !error ? (
+        <div className="empty-state">
+          <p>No summary available</p>
+        </div>
+      ) : null}
     </section>
   )
 }

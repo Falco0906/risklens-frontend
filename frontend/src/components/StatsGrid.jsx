@@ -1,67 +1,41 @@
-import { Activity, Users, DollarSign, AlertTriangle, TrendingUp, TrendingDown } from 'lucide-react'
+import { Activity, Users, DollarSign, AlertTriangle } from 'lucide-react'
 
 function StatsGrid({ stats }) {
   const statCards = [
     {
       label: 'Total Signals',
-      sublabel: 'Events detected',
       value: stats.total,
-      icon: Activity,
-      iconClass: 'total',
-      cardClass: 'total',
-      trend: '+12%',
-      trendUp: true
+      icon: Activity
     },
     {
-      label: 'HR Events',
-      sublabel: 'People & workforce',
+      label: 'HR Signals',
       value: stats.hr,
-      icon: Users,
-      iconClass: 'hr',
-      cardClass: 'hr',
-      trend: '+5%',
-      trendUp: true
+      icon: Users
     },
     {
-      label: 'Finance Events',
-      sublabel: 'Payments & budgets',
+      label: 'Finance Signals',
       value: stats.finance,
-      icon: DollarSign,
-      iconClass: 'finance',
-      cardClass: 'finance',
-      trend: '-3%',
-      trendUp: false
+      icon: DollarSign
     },
     {
-      label: 'Critical/High',
-      sublabel: 'Requires attention',
+      label: 'Critical Signals',
       value: stats.critical,
-      icon: AlertTriangle,
-      iconClass: 'critical',
-      cardClass: 'critical',
-      trend: '+8%',
-      trendUp: true
+      icon: AlertTriangle
     }
   ]
 
   return (
     <section className="stats-grid">
-      {statCards.map((stat, index) => (
-        <div className={`stat-card ${stat.cardClass}`} key={index}>
-          <div className="stat-header">
-            <div className={`stat-icon ${stat.iconClass}`}>
-              <stat.icon size={22} />
-            </div>
-            <span className={`stat-trend ${stat.trendUp ? 'up' : 'down'}`}>
-              {stat.trendUp ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
-              {stat.trend}
-            </span>
+      {statCards.map((stat, index) => {
+        const Icon = stat.icon
+        return (
+          <div className="stat-card" key={index}>
+            <div className="stat-value">{stat.value}</div>
+            <div className="stat-label">{stat.label}</div>
+            <Icon size={16} className="stat-icon" />
           </div>
-          <div className="stat-value">{stat.value}</div>
-          <div className="stat-label">{stat.label}</div>
-          <div className="stat-sublabel">{stat.sublabel}</div>
-        </div>
-      ))}
+        )
+      })}
     </section>
   )
 }

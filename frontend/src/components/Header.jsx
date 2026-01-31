@@ -1,8 +1,18 @@
-import { Bell, RefreshCw, Settings, ChevronDown } from 'lucide-react'
+import { RefreshCw } from 'lucide-react'
 
-function Header({ onRefresh, loading, lastUpdated, criticalCount = 0 }) {
+function Header({ onRefresh, loading, lastUpdated }) {
   const formatTime = (date) => {
-    if (!date) return ''
+    if (!date) return 'just now'
+    const now = new Date()
+    const diffMs = now - date
+    const diffSecs = Math.floor(diffMs / 1000)
+    
+    if (diffSecs < 10) return 'just now'
+    if (diffSecs < 60) return `${diffSecs}s ago`
+    
+    const diffMins = Math.floor(diffMs / 60000)
+    if (diffMins < 60) return `${diffMins}m ago`
+    
     return date.toLocaleTimeString('en-US', { 
       hour: '2-digit', 
       minute: '2-digit'
@@ -12,61 +22,22 @@ function Header({ onRefresh, loading, lastUpdated, criticalCount = 0 }) {
   return (
     <header className="header">
       <div className="header-left">
-        <div className="header-title">
-          <div className="header-logo-sigil" aria-hidden="true">RL</div>
-          <div>
-            <h1>RiskLens</h1>
-            <span className="header-subtitle">Operational macro telemetry</span>
-          </div>
-        </div>
+        <h1>RiskLens</h1>
+        <span className="header-subtitle">Operational Macro Telemetry</span>
       </div>
       
       <div className="header-right">
-        {lastUpdated && (
-          <span className="header-timestamp">
-            Updated {formatTime(lastUpdated)}
-          </span>
-        )}
-        <div className="header-actions">
-          <button 
-            className={`action-btn ${loading ? 'loading' : ''}`}
-            onClick={onRefresh}
-            disabled={loading}
-            title="Refresh Data"
-          >
-            <RefreshCw size={18} />
-          </button>
-          
-          <button
-            className="action-btn"
-            type="button"
-            title="Settings"
-            onClick={() => window.alert('Settings panel is not needed for the demo. All logic runs automatically.')}
-          >
-            <Settings size={18} />
-          </button>
-          
-          <button
-            className="action-btn notification-btn"
-            type="button"
-            title="Notifications"
-            onClick={() => window.alert('Critical and high‑severity signals are already highlighted in the tiles below.')}
-          >
-            <Bell size={18} />
-            {criticalCount > 0 && (
-              <span className="notification-badge">{criticalCount}</span>
-            )}
-          </button>
-        </div>
-        
-        <div className="header-user">
-          <div className="user-avatar">JB</div>
-          <div className="user-info">
-            <span>James Brown</span>
-            <small>Operations Lead</small>
-          </div>
-          <ChevronDown size={16} style={{ color: 'var(--text-muted)' }} />
-        </div>
+        <span className="header-timestamp">
+          Updated {formatTime(lastUpdated)}
+        </span>
+        <button 
+          className={`header-refresh ${loading ? 'loading' : ''}`}
+          onClick={onRefresh}
+          disabled={loading}
+          title="Refresh data"
+        >
+          <RefreshCw size={16} />
+        </button>
       </div>
     </header>
   )

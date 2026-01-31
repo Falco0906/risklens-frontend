@@ -1,60 +1,32 @@
-import { useState } from 'react'
-import {
-  LayoutDashboard,
-  Activity,
-  FileText,
-  Users,
-  Settings
-} from 'lucide-react'
+import { LayoutDashboard, BarChart3, FileText, Users, Settings } from 'lucide-react'
 
 function Sidebar() {
-  const [activeItem, setActiveItem] = useState('dashboard')
-
-  const items = [
-    { id: 'dashboard', icon: LayoutDashboard, title: 'Dashboard' },
-    { id: 'analytics', icon: Activity, title: 'Analytics' },
-    { id: 'reports', icon: FileText, title: 'Reports' },
-    { id: 'team', icon: Users, title: 'Team' },
-    { id: 'settings', icon: Settings, title: 'Settings' }
+  const menuItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, active: true },
+    { id: 'analytics', label: 'Analytics', icon: BarChart3, active: false },
+    { id: 'reports', label: 'Reports', icon: FileText, active: false },
+    { id: 'team', label: 'Team', icon: Users, active: false },
+    { id: 'settings', label: 'Settings', icon: Settings, active: false }
   ]
 
   return (
     <aside className="sidebar">
-      <div className="sidebar-logo" aria-label="RiskLens logo">
-        <div className="logo-mark">
-          <span />
-          <strong>RL</strong>
-          <span />
-        </div>
-      </div>
-      
-      <nav className="sidebar-nav">
-        {items.map(item => {
-          const isActive = activeItem === item.id
-          const Icon = item.icon
-
-          return (
-            <div
-              key={item.id}
-              className={`nav-item ${isActive ? 'nav-item-active' : ''}`}
-            >
-              <button
-                type="button"
-                className={`nav-icon ${isActive ? 'active' : ''}`}
-                title={item.title}
-                aria-pressed={isActive}
-                onClick={() => setActiveItem(item.id)}
+      <div className="sidebar-content">
+        <div className="sidebar-menu">
+          {menuItems.map(item => {
+            const Icon = item.icon
+            return (
+              <div
+                key={item.id}
+                className={`sidebar-item ${item.active ? 'active' : ''}`}
+                title={`${item.label} (read-only)`}
               >
-                <Icon size={22} />
-              </button>
-              <span className="nav-label">{item.title}</span>
-            </div>
-          )
-        })}
-      </nav>
-      
-      <div className="sidebar-footer">
-        <div className="sidebar-status" title="System Online"></div>
+                <Icon size={18} />
+                <span>{item.label}</span>
+              </div>
+            )
+          })}
+        </div>
       </div>
     </aside>
   )

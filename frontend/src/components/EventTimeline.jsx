@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Clock, AlertCircle, CheckCircle } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 
 function EventTimeline({ events, loading, error }) {
   const [activeTab, setActiveTab] = useState('all')
@@ -47,10 +47,7 @@ function EventTimeline({ events, loading, error }) {
   return (
     <section className="events-section">
       <div className="events-header">
-        <h3>
-          <Clock size={18} />
-          Recent Changes
-        </h3>
+        <h3>Signal Timeline</h3>
         <div className="events-tabs">
           {tabs.map(tab => (
             <button
@@ -66,22 +63,19 @@ function EventTimeline({ events, loading, error }) {
       
       {error && (
         <div className="error-banner">
-          <AlertCircle size={16} />
-          <span>Demo mode: Backend connection unavailable</span>
+          <AlertCircle size={14} />
+          <span>{error}</span>
         </div>
       )}
       
       <div className="events-list">
         {loading && events.length === 0 ? (
           <div className="empty-state">
-            <div className="loading-spinner"></div>
-            <p style={{ marginTop: 16 }}>Loading events...</p>
+            <span>Loading...</span>
           </div>
         ) : sortedEvents.length === 0 ? (
           <div className="empty-state">
-            <CheckCircle size={48} />
-            <h4>All Clear</h4>
-            <p>No operational risk signals in this category.</p>
+            <span>No events</span>
           </div>
         ) : (
           sortedEvents.map((event, index) => (
@@ -89,7 +83,6 @@ function EventTimeline({ events, loading, error }) {
               key={event.id || index} 
               event={event} 
               formatTime={formatTime}
-              isLast={index === sortedEvents.length - 1}
             />
           ))
         )}
@@ -98,33 +91,19 @@ function EventTimeline({ events, loading, error }) {
   )
 }
 
-function EventItem({ event, formatTime, isLast }) {
+function EventItem({ event, formatTime }) {
   const severity = (event.severity || 'medium').toLowerCase()
-  const source = (event.source_system || 'unknown').toLowerCase()
   
   return (
     <div className="event-item">
-      <div className="event-severity">
-        <div className={`severity-dot ${severity}`}></div>
-        {!isLast && <div className="severity-line"></div>}
-      </div>
-      
+      <div className={`severity-dot ${severity}`}></div>
       <div className="event-content">
-        <div className="event-type-row">
+        <div className="event-row">
           <span className="event-type">{event.event_type}</span>
-          <span className={`severity-badge ${severity}`}>
-            {severity}
-          </span>
+          <span className="event-source">{event.source_system}</span>
+          <span className="event-time">{formatTime(event.created_at)}</span>
         </div>
-        <p className="event-description">{event.description}</p>
-        <div className="event-meta">
-          <span className={`source-badge ${source}`}>
-            {event.source_system}
-          </span>
-          <span className="event-time">
-            {formatTime(event.created_at)}
-          </span>
-        </div>
+        <div className="event-description">{event.description}</div>
       </div>
     </div>
   )
