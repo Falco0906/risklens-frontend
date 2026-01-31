@@ -1,4 +1,4 @@
-# ChainReaction Frontend
+# RiskLens Frontend
 
 AI Control Tower for Operational Risk - Executive Dashboard
 
