@@ -77,11 +77,12 @@ function App() {
     }
   }
   
-  // Auto-refresh every 45 seconds
+// Auto-refresh DISABLED to save AI quota
+// const interval = setInterval(fetchData, 30000)
+
   useEffect(() => {
     fetchData()
-    const interval = setInterval(fetchData, 45000)
-    return () => clearInterval(interval)
+    return () => {}
   }, [])
   
 
